@@ -9,3 +9,8 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
+
+- Line 35-37 - faster exit - for falsely event return trivial key
+- Line 39-44 added a faster exit for the function. If the given partion key is valid deterministicPartitionKey then return it
+- Avoided a 'global' local variable
+- Avoided nest if blocks as much as possible

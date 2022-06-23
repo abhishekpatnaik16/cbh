@@ -20,7 +20,7 @@ describe("deterministicPartitionKey", () => {
     expect(deterministicPartitionKey(event)).toBe(event.partitionKey);
   });
 
-  it("Returns the stringified partitionKey when given an event object with some partitonKey", () => {
+  it("Returns the events stringified partitionKey as deterministicPartitionKey when given an event object with some partitonKey", () => {
     const event = {
       partitionKey: Math.floor(Math.random() * 10 ** 10),
     };
@@ -29,12 +29,21 @@ describe("deterministicPartitionKey", () => {
     );
   });
 
-  it("Returns a new parition key when the given events partion key has a length more than 256 characters", () => {
+  it("Returns a new deterministicPartitionKey when the given events partitionKey has a length more than 256 characters", () => {
     const event = {
       partitionKey: Array(257).fill("A").join(""),
     };
     expect(deterministicPartitionKey(event)).toBe(
       "437dbfb4791398dad50bf115034dd483a1a365a3b16d270d6c7703c78fb060581a2d2d3e75315d4abaf9e93a1e11ac587056a873238d24ed3053db1885619f4a"
+    );
+  });
+
+  it("Returns correct key for partitionKey '0'", () => {
+    const event = {
+      partitionKey: 0,
+    };
+    expect(deterministicPartitionKey(event)).toBe(
+      "e65a0cb83a95cae7eb0642da576cac881e397c0405c63577c977068f7892f69f1c315baa294124da2a67e0c486d340f9d357377f894d0c0fd850484f8984f2e7"
     );
   });
 });
