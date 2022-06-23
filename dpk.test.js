@@ -13,10 +13,28 @@ describe("deterministicPartitionKey", () => {
     );
   });
 
-  it("Returns partitionKey when given an event object with some partitonKey", () => {
+  it("Returns the partitionKey when given an event object with some partitonKey", () => {
     const event = {
-      partitionKey: "12345",
+      partitionKey: (Math.random() * 10 ** 10).toFixed(),
     };
     expect(deterministicPartitionKey(event)).toBe(event.partitionKey);
+  });
+
+  it("Returns the stringified partitionKey when given an event object with some partitonKey", () => {
+    const event = {
+      partitionKey: Math.floor(Math.random() * 10 ** 10),
+    };
+    expect(deterministicPartitionKey(event)).toBe(
+      JSON.stringify(event.partitionKey)
+    );
+  });
+
+  it("Returns a new parition key when the given events partion key has a length more than 256 characters", () => {
+    const event = {
+      partitionKey: Array(257).fill("A").join(""),
+    };
+    expect(deterministicPartitionKey(event)).toBe(
+      "437dbfb4791398dad50bf115034dd483a1a365a3b16d270d6c7703c78fb060581a2d2d3e75315d4abaf9e93a1e11ac587056a873238d24ed3053db1885619f4a"
+    );
   });
 });
